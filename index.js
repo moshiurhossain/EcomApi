@@ -4,6 +4,8 @@ const cors = require('cors')
 const route = require('./src/routes/routes')
 const app = express()
 const port = 8000
+// dot env config
+require('dotenv').config();
 
 //  middleware
 app.use(express.json())
