@@ -1,5 +1,9 @@
 // libaries
+const { generateOTP } = require("../helpers/allGenerators")
+const otpTemplate = require("../helpers/otpTemplete")
 const { emailRegex, passwordRegex } = require("../helpers/Regex")
+const sendMail = require("../helpers/sendMail")
+
 const authModel = require("../models/authModel")
 
 
@@ -19,9 +23,16 @@ const register_Controller = async (req,res)=>{
   if(!userName || !email || !password || !phone || !address ) return res.status(404).send(`Need to provide required information`)
     //    email regex
 // if(!emailRegex.test(email)) return res.status(404).send(`not a valid email`)
+//  check password length
+if(password.length < 7) return res.status(404).send(`password shoud be more then 7 letters`)
 //     //    password regex
 // if(!passwordRegex.test(password)) return res.status(404).send(`weak password`)
 
+// generate otp
+const otp = generateOTP()
+
+// send mail
+sendMail(email,'Otp verification', otpTemplate(userName,otp))
 
     // save to db
     await new authModel({
