@@ -77,12 +77,20 @@ const verifyOtp_Controller = async (req,res)=>{
           // check current time
         const currentTime = new Date(Date.now())
         //  check otp expire time
-        if( currentTime >existingOtp.expireOtpTime){ 
+        if( currentTime >existingOtp.expireOtpTime)
           return res.status(401).send(`otp time has expired`)
-        }else{
+      
+          // change existingotp data status
+          existingOtp.expireOtpTime = null
+          existingOtp.otp = null
+          existingOtp.isVerified = true
+
+          // save changed data to db
+          await existingOtp.save()
             // all ok
              res.status(200).send(`verify otp`)
-        }
+
+        
 
        
     }catch(err){
