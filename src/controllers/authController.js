@@ -29,6 +29,10 @@ if(password.length < 7) return res.status(404).send(`password shoud be more then
 //     //    password regex
 // if(!passwordRegex.test(password)) return res.status(404).send(`weak password`)
 
+// check for existing user email
+const existingEmail = await authModel.find({email})
+if(existingEmail) return res.status(401).send(`User already exists. Try different email`)
+
 // generate otp
 const otp = generateOTP()
 
@@ -48,11 +52,8 @@ console.log(otpExpiryTime())
              password:hashPass,
              phone,
              address,
-             userRole,
              otp,
              expireOtpTime:otpExpiryTime(),
-             avatar,
-             isVerified
     }).save()
         // all ok
         res.status(200).send(`Registered Successfully`)
