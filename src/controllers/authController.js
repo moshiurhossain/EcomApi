@@ -1,10 +1,11 @@
 // libaries
-const { generateOTP } = require("../helpers/allGenerators")
+const { generateOTP, otpExpiryTime } = require("../helpers/allGenerators")
 const otpTemplate = require("../helpers/otpTemplete")
 const { emailRegex, passwordRegex } = require("../helpers/Regex")
 const sendMail = require("../helpers/sendMail")
-
+const bcrypt = require('bcrypt');
 const authModel = require("../models/authModel")
+
 
 
 // registration controller 
@@ -34,13 +35,24 @@ const otp = generateOTP()
 // send mail
 sendMail(email,'Otp verification', otpTemplate(userName,otp))
 
+// encrypt password
+const hashPass = await bcrypt.hash(password,10)
+
+// otp expiretime
+console.log(otpExpiryTime())
+
     // save to db
     await new authModel({
             userName,
              email,
-             password,
+             password:hashPass,
              phone,
-             address
+             address,
+             userRole,
+             otp,
+             expireOtpTime:otpExpiryTime(),
+             avatar,
+             isVerified
     }).save()
         // all ok
         res.status(200).send(`Registered Successfully`)
