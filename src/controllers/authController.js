@@ -5,6 +5,7 @@ const { emailRegex, passwordRegex } = require("../helpers/Regex")
 const sendMail = require("../helpers/sendMail")
 const bcrypt = require('bcrypt');
 const authModel = require("../models/authModel")
+const jwt = require('jsonwebtoken');
 
 
 
@@ -158,9 +159,33 @@ const login_Controller = async (req,res)=>{
             // if user email is not verified
             if(!existingUser.isVerified) return res.status(404).send(`email: ${email} not verifed  `)  
             // ------------------------ user validation ends --------------------- //
+            
+            // ------------------------ generate jwt token --------------------- //
+
+           const token =  jwt.sign(
+                      {
+                        email: existingUser.email,
+                        userRole: existingUser.userRole,
+                      }, process.env.jwt_Secret, 
+                      {
+                        expiresIn: '1h' 
+                      }
+                     );
+                     // ------------------------ generate jwt token ends--------------------- //
+        // ----------- select data for frontend
+        const userInfo ={
+          userName:existingUser.userName,
+          avatar:existingUser.avatar,
+          email:existingUser.email,
+          phone:existingUser.phone,
+          address:existingUser.address,
+          role:existingUser.userRole,
+          verified:existingUser.isVerified,
+        }
+
 
         // all ok
-        res.status(200).send(`Login Successfully`)
+        res.status(200).send({userInfo:userInfo , accessToken:token})
     }catch(err){
       res.status(500).send(`${err}`)
     }
