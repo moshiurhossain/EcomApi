@@ -138,10 +138,24 @@ const login_Controller = async (req,res)=>{
     try{
         // get data from frontend
           const { email, password } = req.body
+          // check email regex
+          if(!emailRegex.test(email)) return res.status(404).send(`not a valid email`)  
+
+          if(!password)  return res.status(404).send(`must enter password`) 
+          // //    password regex
+          // if(!passwordRegex.test(password)) return res.status(404).send(`weak password`)
+
+
+            // check user in db
+            const existingUser = await authModel.findOne({email})
+            // if not found
+            if(!existingUser) return res.status(404).send(`user not found`)  
+            //  match password 
+            const match = await bcrypt.compare(password,existingUser.password)
 
 
         // all ok
-        res.status(200).send(`Registered Successfully`)
+        res.status(200).send(`Login Successfully`)
     }catch(err){
       res.status(500).send(`${err}`)
     }
