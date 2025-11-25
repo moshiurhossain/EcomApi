@@ -30,8 +30,8 @@ if(password.length < 7) return res.status(404).send(`password shoud be more then
 // if(!passwordRegex.test(password)) return res.status(404).send(`weak password`)
 
 // check for existing user email
-const existingEmail = await authModel.find({email})
-if (email== existingEmail) return res.status(401).send(`User already exists. Try different email`)
+const existingEmail = await authModel.findOne({email})
+if ( existingEmail) return res.status(401).send(`User already exists. Try different email`)
 
 // generate otp
 const otp = generateOTP()
@@ -98,15 +98,46 @@ const verifyOtp_Controller = async (req,res)=>{
     }
 }
 
+// login controller 
+const resendOtp_Controller = async (req,res)=>{
+    try{
+          // get data from frontend
+          const { email} = req.body
+          // check email regex
+          if(!emailRegex.test(email)) return res.status(404).send(`not a valid email`)  
+           
+          const existingUser = await authModel.findOne({email})
+          // check existing user 
+          if(!existingUser) return res.status(404).send(`email not found`)  
+
+          // send new otp and set new expire date
+          const otp = generateOTP()
+          const expireOtpTime =  otpExpiryTime()
+          //  set new otp and expire time to db value
+          existingUser.otp = otp
+          existingUser.expireOtpTime =expireOtpTime
+          // save new values to db
+          await existingUser.save()
+          // sebd email via otp
+          sendMail(email,'Resend otp', otpTemplate(existingUser.userName,otp))
+
+  
+
+
+        // all ok
+        res.status(200).send(`Otp resent`)
+    }catch(err){
+      res.status(500).send(`${err}`)
+    }
+}
+
+
 
 // login controller 
 const login_Controller = async (req,res)=>{
     try{
         // get data from frontend
-        //   const {
-        //      email,
-        //      password,
-        //   } = req.body
+          const { email, password } = req.body
 
 
         // all ok
@@ -121,4 +152,5 @@ module.exports = {
     register_Controller,
     login_Controller,
     verifyOtp_Controller,
+    resendOtp_Controller,
 }
