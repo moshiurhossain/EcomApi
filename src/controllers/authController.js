@@ -138,6 +138,7 @@ const login_Controller = async (req,res)=>{
     try{
         // get data from frontend
           const { email, password } = req.body
+          // ------------------------ user validation start --------------------- //
           // check email regex
           if(!emailRegex.test(email)) return res.status(404).send(`not a valid email`)  
 
@@ -152,7 +153,11 @@ const login_Controller = async (req,res)=>{
             if(!existingUser) return res.status(404).send(`user not found`)  
             //  match password 
             const match = await bcrypt.compare(password,existingUser.password)
-
+            // if password dont match
+            if(!match) return res.status(404).send(`wrong credential`)  
+            // if user email is not verified
+            if(!existingUser.isVerified) return res.status(404).send(`email: ${email} not verifed  `)  
+            // ------------------------ user validation ends --------------------- //
 
         // all ok
         res.status(200).send(`Login Successfully`)
