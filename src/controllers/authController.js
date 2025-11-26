@@ -12,7 +12,7 @@ const cloudinary=require('cloudinary')
     cloudinary.config({ 
         cloud_name: 'doguuil48', 
         api_key: '835279789187353', 
-        api_secret: '<your_api_secret>' // Click 'View API Keys' above to copy your API secret
+        api_secret: 'O_g_uwsr6YxG73lDqL9aLxGEcJw' // Click 'View API Keys' above to copy your API secret
     });
 
 
@@ -202,7 +202,7 @@ const login_Controller = async (req,res)=>{
 const updateProfile_Controller = async (req,res)=>{
     try{    
             // get data from frontend
-            const {email,userName,phone,address,avatar} = req.body
+            const {email,userName,phone,address,} = req.body
           //  check existing user
           const existingUser = await authModel.findOne({email})
 
@@ -211,19 +211,16 @@ const updateProfile_Controller = async (req,res)=>{
           if(phone) existingUser.phone = phone
           if(address) existingUser.address = address
           // change avatar
-          if(avatar){
+          if(req.file.path){
                 // Upload an image
      const uploadResult = await cloudinary.uploader
-       .upload(
-           req.file.path, {
-               public_id: `Img:${new Date(Date.now())}`,
-           }
-       )
+       .upload( req.file.path, {public_id: `Img:${new Date(Date.now())}`,})
        .catch((error) => {
            console.log(error);
        });
         // ------------
-        console.log(uploadResult)
+        existingUser.avatar =uploadResult.url
+        console.log(uploadResult.url)
             }
 
           // save updated value to db
