@@ -132,8 +132,6 @@ const resendOtp_Controller = async (req,res)=>{
     }
 }
 
-
-
 // login controller 
 const login_Controller = async (req,res)=>{
     try{
@@ -191,10 +189,27 @@ const login_Controller = async (req,res)=>{
     }
 }
 
+// update profile controller
+const updateProfile_Controller = async (req,res)=>{
+    try{
+
+
+      // all ok
+      res.status(200).send(`profile updated`)
+
+    }catch(err){
+     res.status(500).send(`${err}`)
+    }
+}
+
+
+
+
 // all exports
 module.exports = {
     register_Controller,
     login_Controller,
     verifyOtp_Controller,
     resendOtp_Controller,
+    updateProfile_Controller,
 }
