@@ -6,6 +6,14 @@ const sendMail = require("../helpers/sendMail")
 const bcrypt = require('bcrypt');
 const authModel = require("../models/authModel")
 const jwt = require('jsonwebtoken');
+const cloudinary=require('cloudinary')
+
+   // Cloudinary Configuration 
+    cloudinary.config({ 
+        cloud_name: 'doguuil48', 
+        api_key: '835279789187353', 
+        api_secret: '<your_api_secret>' // Click 'View API Keys' above to copy your API secret
+    });
 
 
 
@@ -179,6 +187,7 @@ const login_Controller = async (req,res)=>{
           address:existingUser.address,
           role:existingUser.userRole,
           verified:existingUser.isVerified,
+          id:existingUser.id,
         }
 
 
@@ -191,11 +200,39 @@ const login_Controller = async (req,res)=>{
 
 // update profile controller
 const updateProfile_Controller = async (req,res)=>{
-    try{
+    try{    
+            // get data from frontend
+            const {email,userName,phone,address,avatar} = req.body
+          //  check existing user
+          const existingUser = await authModel.findOne({email})
 
+          // update username,phone,address if value is given
+          if(userName) existingUser.userName = userName
+          if(phone) existingUser.phone = phone
+          if(address) existingUser.address = address
+          // change avatar
+          if(avatar){
+                // Upload an image
+     const uploadResult = await cloudinary.uploader
+       .upload(
+           req.file.path, {
+               public_id: `Img:${new Date(Date.now())}`,
+           }
+       )
+       .catch((error) => {
+           console.log(error);
+       });
+        // ------------
+        console.log(uploadResult)
+            }
+
+          // save updated value to db
+        
+
+            
 
       // all ok
-      res.status(200).send(`profile updated`)
+      res.status(200).send(`updated`)
 
     }catch(err){
      res.status(500).send(`${err}`)
