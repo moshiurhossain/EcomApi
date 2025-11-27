@@ -10,7 +10,7 @@ authApi.post('/register',register_Controller)
 authApi.post('/verifyotp',verifyOtp_Controller)
 authApi.get('/resendotp',resendOtp_Controller)
 authApi.post('/login',login_Controller)
-authApi.patch('/updateprofile',jwtVerification,upload.single('avatar') ,updateProfile_Controller)
+authApi.post('/updateprofile',upload.single('avatar') ,updateProfile_Controller)
 
 
 // exports

@@ -215,24 +215,22 @@ const updateProfile_Controller = async (req,res)=>{
           if(req.file.path){
                 // Upload an image
      const uploadResult = await cloudinary.uploader
-       .upload( req.file.path, {public_id: `Img:${new Date(Date.now())}`,})
+       .upload( req.file.path, {public_id: `img-${Date.now()}`,})
        .catch((error) => {
            console.log(error);
        });
         // ------------ set upload url link as avatar value
         existingUser.avatar =uploadResult.url
-        console.log(uploadResult.url)
+   
             }
 
-          // save updated value to db
-         await existingUser.save()
-
-        // unlink file system 
-        fs.unlink(req.file.path,(err)=>{
-          if(err)console.log(err)
-        })
-
             
+            // unlink file system 
+            fs.unlink(req.file.path,(err)=>{if(err)console.log(err)})
+            
+            
+            // save updated value to db
+           await existingUser.save()
 
       // all ok
       res.status(200).send(`updated`)
