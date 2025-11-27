@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const authModel = require("../models/authModel")
 const jwt = require('jsonwebtoken');
 const cloudinary=require('cloudinary')
+const fs = require('fs')
 
    // Cloudinary Configuration 
     cloudinary.config({ 
@@ -218,13 +219,18 @@ const updateProfile_Controller = async (req,res)=>{
        .catch((error) => {
            console.log(error);
        });
-        // ------------
+        // ------------ set upload url link as avatar value
         existingUser.avatar =uploadResult.url
         console.log(uploadResult.url)
             }
 
           // save updated value to db
-        
+         await existingUser.save()
+
+        // unlink file system 
+        fs.unlink(req.file.path,(err)=>{
+          if(err)console.log(err)
+        })
 
             
 
