@@ -1,13 +1,32 @@
 // libaries
+const cloudinary=require('cloudinary')
+const fs = require('fs');
+const categoryModel = require('../models/categoryModel');
+
+   // Cloudinary Configuration 
+    cloudinary.config({ 
+        cloud_name: 'doguuil48', 
+        api_key: '835279789187353', 
+        api_secret: 'O_g_uwsr6YxG73lDqL9aLxGEcJw' // Click 'View API Keys' above to copy your API secret
+    });
 
 
 // add category controller
-const addCategory_controller = (req,res)=>{
+const addCategory_controller =async (req,res)=>{
    try{ // take data from frontend  
-    // const {categoryName,creatorName}= req.body
-    // // check for empty field 
-    // if(!categoryName || !creatorName) return res.status(401).send('need to fill in all details')
+    const {categoryName,creatorName}= req.body
+    // check for empty field 
+    if(!categoryName || !creatorName) return res.status(401).send('need to fill in all details')
+        // 
+    const categoryImage = await cloudinary.uploader.upload(req.file.path,{public_id:Date.now()})
 
+    await new categoryModel({
+        categoryName,
+        categoryImage:categoryImage.url,
+        creatorName,
+    }).save()
+     
+    fs.unlink(req.file.path,(err)=>{if(err)console.log(err)})
 
 
 
