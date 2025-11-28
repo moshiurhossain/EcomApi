@@ -4,7 +4,10 @@
 // add category controller
 const addCategory_controller = (req,res)=>{
    try{ // take data from frontend  
-    const {categoryName,categoryImage}= req.body
+    // const {categoryName,creatorName}= req.body
+    // // check for empty field 
+    // if(!categoryName || !creatorName) return res.status(401).send('need to fill in all details')
+
 
 
 
