@@ -43,14 +43,20 @@ const addCategory_controller =async (req,res)=>{
 
 
 // update category controller
-const updateCategory_controller = (req,res)=>{
+const updateCategory_controller = async (req,res)=>{
    try{ // take data from frontend  
-    const {categoryName,categoryImage}= req.body
-
+    const {categoryid,updateStatus}= req.body
+//    check for category id
+    if(!categoryid) return res.status(404).send(`category is required`)
+     
+        
+    await  categoryModel.findByIdAndUpdate(categoryid,{adminApproval:updateStatus})
+        
+        if(updateStatus !='approved'&& updateStatus !='rejected') return res.status(401).send(`please change status`)
 
 
     // all ok
-    res.status(200).send(`category updated `)
+    res.status(200).send(`category updated  `)
 }catch(err){
      console.log(err)
 }
