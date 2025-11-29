@@ -63,9 +63,13 @@ const updateCategory_controller = async (req,res)=>{
 }
 
 // delete category controller
-const deleteCategory_controller = (req,res)=>{
+const deleteCategory_controller = async (req,res)=>{
    try{ // take data from frontend  
-    const {categoryName,categoryImage}= req.body
+    const {categoryid}= req.body
+    //    check for category id
+    if(!categoryid) return res.status(404).send(`category is required`)
+
+    await categoryModel.findByIdAndDelete(categoryid)    
 
 
 
