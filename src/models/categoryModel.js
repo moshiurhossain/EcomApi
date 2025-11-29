@@ -11,9 +11,9 @@ const categorySchema = new mongoose.Schema({
       type:String,
       required:true,
     },
-    creatorName:{
-      type:mongoose.Schema.ObjectId,
-      ref:'auths'
+    creatorName: {
+        type: mongoose.Schema.ObjectId,
+        ref:'auths',
     },
     adminApproval:{
       type:String,

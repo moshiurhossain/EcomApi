@@ -1,5 +1,5 @@
 // libaries
-const cloudinary=require('cloudinary')
+const  cloudinary =require('cloudinary').v2
 const fs = require('fs');
 const categoryModel = require('../models/categoryModel');
 
@@ -13,17 +13,21 @@ const categoryModel = require('../models/categoryModel');
 
 // add category controller
 const addCategory_controller =async (req,res)=>{
-   try{ // take data from frontend  
+   try{ 
+    // take data from frontend  
     const {categoryName,creatorName}= req.body
     // check for empty field 
-    if(!categoryName || !creatorName) return res.status(401).send('need to fill in all details')
-        // 
+    if(!categoryName || !creatorName ) return res.status(401).send('need to fill in all details')
+    
     const categoryImage = await cloudinary.uploader.upload(req.file.path,{public_id:Date.now()})
+     if(!categoryImage) return res.status(404).send(`you must select category image`)
+   
 
     await new categoryModel({
         categoryName,
-        categoryImage:categoryImage.url,
         creatorName,
+        categoryImage:categoryImage.url,
+        
     }).save()
      
     fs.unlink(req.file.path,(err)=>{if(err)console.log(err)})
