@@ -10,16 +10,17 @@ const jwtVerification =(req,res,next)=>{
       const token = req.headers.authorization
         // decode access token/jwt token
        const decoded = jwt.verify(token, process.env.jwt_secret);
+        console.log(decoded)
+        // creating user key with value as decode and adding it to req object
         req.user = decoded
-        // send to next if decoded
         next()
 
 
         // all ok
-        res.status(200).send(`token verified ${token}`)
+      
     }catch(err){
         //   redirect
-        res.status(307).send(`token expired : ${err}`)
+        res.status(307).send(err)
       
     }
 }
