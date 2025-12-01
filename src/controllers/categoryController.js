@@ -80,14 +80,14 @@ const deleteCategory_controller = async (req,res)=>{
 }
 }
 // get category controller
-const getCategory_controller = (req,res)=>{
+const getAllCategory_controller = async (req,res)=>{
    try{ // take data from frontend  
-    const {categoryName,categoryImage}= req.body
-
+   
+ const all_category = await categoryModel.find()
 
 
     // all ok
-    res.status(200).send(`category deleted `)
+    res.status(200).send( all_category)
 }catch(err){
      console.log(err)
 }
@@ -102,5 +102,5 @@ module.exports={
     addCategory_controller,
     updateCategory_controller,
     deleteCategory_controller,
-    getCategory_controller,
+    getAllCategory_controller,
 }
