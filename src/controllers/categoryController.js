@@ -92,6 +92,19 @@ const getAllCategory_controller = async (req,res)=>{
      console.log(err)
 }
 }
+// get category controller
+const getActiveCategory_controller = async (req,res)=>{
+   try{ // take data from frontend  
+   
+ const all_category = await categoryModel.find({adminApproval:'approved'})
+
+
+    // all ok
+    res.status(200).send( all_category)
+}catch(err){
+     console.log(err)
+}
+}
 
 
 
@@ -103,4 +116,5 @@ module.exports={
     updateCategory_controller,
     deleteCategory_controller,
     getAllCategory_controller,
+    getActiveCategory_controller,
 }
