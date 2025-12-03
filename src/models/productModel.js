@@ -22,8 +22,7 @@ const productSchema = mongoose.Schema({
     required:true,
   },
 // ----product varient  
-  varient:[
-    {
+  varient:[{
         varientName:{
             type:String,
             default:null,
@@ -32,9 +31,7 @@ const productSchema = mongoose.Schema({
             type:Number,
             default:null,
         },
-    }
-   
-  ],
+    }],
 // ----category Id  
   categoryId:{
     type:mongoose.Schema.ObjectId,
@@ -47,8 +44,7 @@ const productSchema = mongoose.Schema({
     required:true,
   },
 //  ----product review
-  reviews:[
-    {
+  reviews:[{
         reviewerName:{
             type:mongoose.Schema.ObjectId,
             ref:'auth'
@@ -57,14 +53,43 @@ const productSchema = mongoose.Schema({
             type:String,
             required:true,
         }
-    }
-  ] ,
+    }] ,
 //  ----product discount price
   discountPrice:{
     type:Number,
     default:null,
   },  
-//  ----product discount price   
+//  ----product tags
+  tags:[{
+    type:String,
+    default:null,
+  }],
+//  ----product stock
+  stock:{
+    type:Number,
+    required:true,
+  },
+// ---------------------------------------------------------------------------------------------------// 
+
+
+
+//  ----product sku
+  SKU:{
+    type:Number,
+    required:true,
+  },
+//  ----product admin approval
+ adminApproval:{
+      type:String,
+      enum:['pending','approved','rejected'],
+      default:'pending',
+ },
+//  ----slug 
+slug:{
+    type:String,
+    required:true,
+}
+
 })
 
 module.exports = mongoose.model('product',productSchema)
