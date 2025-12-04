@@ -1,9 +1,15 @@
+// libaries
 const express = require('express')
 const { addProduct_Controller } = require('../../controllers/productController')
 const productApi = express.Router()
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
+const uploadMiddleware = upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'subImages', maxCount: 4 }])
 
 
-productApi.post('/addproduct',addProduct_Controller)
+// addproduct api
+productApi.post('/addproduct',uploadMiddleware,addProduct_Controller)
 
 // exports
 module.exports = productApi

@@ -11,18 +11,18 @@ function otpExpiryTime(){
    return future
 }
 // slug generator
- const generateSlug = (title = "") => {
-  if (!title) return "";
+const generateSlug = (title) => {
+  // if (!title) return "";
 
   return title
     .toString()
-    .normalize("NFKD")               // Normalize accents
-    .replace(/[\u0300-\u036f]/g, "") // Remove accents
-    .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")     // Replace non-alphanumeric with hyphen
+    .trim()
+    .normalize("NFKD")               // Normalize accents (á → a)
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+    .replace(/[^a-z0-9]+/g, "-")     // Replace invalid chars with hyphen
     .replace(/-+/g, "-")             // Collapse multiple hyphens
-    .replace(/^-+|-+$/g, "");        // Trim hyphens
+    .replace(/^-+|-+$/g, "");        // Trim hyphens from start & end
 };
 
 //  sku generator 

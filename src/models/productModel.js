@@ -47,11 +47,12 @@ const productSchema = mongoose.Schema({
   reviews:[{
         reviewerName:{
             type:mongoose.Schema.ObjectId,
-            ref:'auth'
+            ref:'auth',
+            default:null,
         },
         review:{
             type:String,
-            required:true,
+            default:null,
         }
     }] ,
 //  ----product discount price
