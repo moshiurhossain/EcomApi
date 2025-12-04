@@ -76,7 +76,7 @@ const productSchema = mongoose.Schema({
 
 //  ----product sku
   SKU:{
-    type:Number,
+    type:String,
     required:true,
   },
 //  ----product admin approval

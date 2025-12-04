@@ -2,6 +2,8 @@
 const { generateSlug, generateSKU } = require("../helpers/allGenerators")
 const  cloudinary =require('cloudinary').v2
 const fs = require('fs');
+const productModel = require("../models/productModel");
+const { json } = require("stream/consumers");
 
 
    // Cloudinary Configuration 
@@ -17,8 +19,8 @@ const addProduct_Controller = async (req,res)=>{
         //    get data from frontend
             const {
                title,
-               thumbnail,
-               subImages,  /**not mandatory */
+            //    thumbnail,
+            //    subImages,  /**not mandatory */
                price,
                varient, /**not mandatory */
                categoryId,
@@ -48,22 +50,39 @@ const addProduct_Controller = async (req,res)=>{
               subimagePath.map( async (item)=>{
                const subimageLink =  await cloudinary.uploader.upload(item,{public_id:Date.now(), subimage:'mernsubimages'})
                 fs.unlink(item,(err)=>{if(err)console.log(err)})
-               return subimageLink
+               return subimageLink.url
                 })
           )  
             console.log(subImage)
+            console.log(thumbnailImage.url)
 
 
-        
+        //  save to db
+        await new productModel({
+            title,
+            thumbnail:thumbnailImage.url,
+            subImages:subImage,
+            price,
+            varient:JSON.parse(varient),
+            categoryId,
+            discription,
+            discountPrice,
+            tags,
+            stock,
+            SKU,
+            slug,
+
+        }).save()
          
      
           
 
         // all ok
-        res.status(200).send(req.files)
+        res.status(200).json('product uploaded')
 
     }catch(err){
-        res.status(500).send(err)
+        console.log(err)
+        res.status(500).json(err)
     }  
 }
 
