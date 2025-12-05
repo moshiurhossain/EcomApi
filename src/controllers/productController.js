@@ -84,7 +84,23 @@ const addProduct_Controller = async (req,res)=>{
     }  
 }
 
+// ------------update product status
+const ProductStatus_Controller =(req,res)=>{
+  try{ 
+     
+
+     // all ok
+        res.status(200).json('product uploaded')
+  }catch(er){
+      console.log(err)
+        res.status(500).json(err)
+  }
+}
+
 
 
 // --exports
-module.exports ={addProduct_Controller}
+module.exports ={
+    addProduct_Controller,
+    ProductStatus_Controller,
+}
