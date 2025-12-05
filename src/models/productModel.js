@@ -14,7 +14,8 @@ const productSchema = mongoose.Schema({
   },
 // ---- product sub-images  
   subImages:[{
-    type:String,default:null,
+    type:String,
+    default:null,
 }],
 // ---- product price  
  price:{

@@ -19,8 +19,6 @@ const addProduct_Controller = async (req,res)=>{
         //    get data from frontend
             const {
                title,
-            //    thumbnail,
-            //    subImages,  /**not mandatory */
                price,
                varient, /**not mandatory */
                categoryId,
@@ -48,7 +46,7 @@ const addProduct_Controller = async (req,res)=>{
           const subImage= await Promise.all(
 
               subimagePath.map( async (item)=>{
-               const subimageLink =  await cloudinary.uploader.upload(item,{public_id:Date.now(), subimage:'mernsubimages'})
+               const subimageLink =  await cloudinary.uploader.upload(item,{public_id:Date.now()})
                 fs.unlink(item,(err)=>{if(err)console.log(err)})
                return subimageLink.url
                 })
