@@ -121,10 +121,26 @@ const deleteProduct_controller= async (req,res)=>{
   }
 }
 
+// dashboard products
+const dashboardproduct_Controller =(req,res)=>{
+    try{
+
+
+
+        // all ok
+        res.status(200).json('Dash product ')
+
+    }catch(er){
+      console.log(err)
+        res.status(500).json(err)
+  }
+}
 
 
 // --exports
 module.exports ={
     addProduct_Controller,
     ProductStatus_Controller,
+    deleteProduct_controller,
+    dashboardproduct_Controller,
 }
