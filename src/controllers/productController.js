@@ -97,8 +97,25 @@ const ProductStatus_Controller = async(req,res)=>{
      
 
      // all ok
-        res.status(200).json('product uploaded')
+        res.status(200).json('product status changed')
   }catch(er){
+      console.log(err)
+        res.status(500).json(err)
+  }
+}
+
+// delete product controller
+const deleteProduct_controller= async (req,res)=>{
+    try{ 
+        const {productId} =req.body
+
+        await productModel.findByIdAndDelete(productId)
+
+
+        // all ok
+        res.status(200).json('product deleted')
+
+    }catch(er){
       console.log(err)
         res.status(500).json(err)
   }
