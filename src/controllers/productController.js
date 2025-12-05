@@ -122,13 +122,27 @@ const deleteProduct_controller= async (req,res)=>{
 }
 
 // dashboard products
-const dashboardproduct_Controller =(req,res)=>{
+const dashboardproduct_Controller = async (req,res)=>{
     try{
+        // filter by  category of get all products
+         const {filterProduct}=req.body
+        // create empty object
+        const filterBy ={}
+        if(filterProduct != 'all') filterBy.categoryId =filterProduct
 
+
+        // create empty object name limit
+        const {limit,page} = req.query
+        const limitperPage = limit || 6
+        const productSkip = limitperPage*(page-1)
+        
+
+
+        const products = await productModel.find({filterBy}).limit(limitperPage).skip(productSkip)
 
 
         // all ok
-        res.status(200).json('Dash product ')
+        res.status(200).json(products)
 
     }catch(er){
       console.log(err)
