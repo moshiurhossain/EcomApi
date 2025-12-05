@@ -4,6 +4,7 @@ const  cloudinary =require('cloudinary').v2
 const fs = require('fs');
 const productModel = require("../models/productModel");
 const { json } = require("stream/consumers");
+const { default: mongoose } = require("mongoose");
 
 
    // Cloudinary Configuration 
@@ -85,8 +86,14 @@ const addProduct_Controller = async (req,res)=>{
 }
 
 // ------------update product status
-const ProductStatus_Controller =(req,res)=>{
+const ProductStatus_Controller = async(req,res)=>{
   try{ 
+
+        const {productId, status} = req.body
+        
+        const existingProduct = await productModel.findByIdAndUpdate(productId,{adminApproval:status})
+        
+        if(status != 'approved' && status != 'rejected') return res.status(401).json('you must change status')
      
 
      // all ok
