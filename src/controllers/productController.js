@@ -128,17 +128,20 @@ const dashboardproduct_Controller = async (req,res)=>{
          const {filterProduct}=req.body
         // create empty object
         const filterBy ={}
-        if(filterProduct != 'all') filterBy.categoryId =filterProduct
-
-
-        // create empty object name limit
-        const {limit,page} = req.query
+        
+        
+        // get query params
+        const {limit,page, minprice,maxprice} = req.query
         const limitperPage = limit || 6
         const productSkip = limitperPage*(page-1)
         
+        
+        if(minprice && maxprice)  filterBy.discountPrice ={$gte:minprice,$lte:maxprice}
+            
+            
+            if(filterProduct != 'all') filterBy.categoryId =filterProduct
 
-
-        const products = await productModel.find({filterBy}).limit(limitperPage).skip(productSkip)
+        const products = await productModel.find({filterBy}).limit(limitperPage).skip(productSkip).sort({discountPrice})
 
 
         // all ok
