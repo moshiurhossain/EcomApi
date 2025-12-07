@@ -128,20 +128,26 @@ const dashboardproduct_Controller = async (req,res)=>{
          const {filterProduct}=req.body
         // create empty object
         const filterBy ={}
-        
+        const sortByPrice ={}
         
         // get query params
-        const {limit,page, minprice,maxprice} = req.query
+        const {limit,page, minprice,maxprice,sortBy} = req.query
+
+
         const limitperPage = limit || 6
         const productSkip = limitperPage*(page-1)
         
-        
+        // sort by max and min price
         if(minprice && maxprice)  filterBy.discountPrice ={$gte:minprice,$lte:maxprice}
-            
-            
-            if(filterProduct != 'all') filterBy.categoryId =filterProduct
 
-        const products = await productModel.find({filterBy}).limit(limitperPage).skip(productSkip).sort({discountPrice})
+         // sort by category 
+        if(filterProduct != 'all') filterBy.categoryId =filterProduct
+        // sort from high to low or visversa
+        if(sortBy=='lowtohigh') sortByPrice.discountPrice =1
+        if(sortBy=='hightolow') sortByPrice.discountPrice =-1
+        
+        // display product from db
+        const products = await productModel.find(filterBy).limit(limitperPage).skip(productSkip).sort(sortByPrice).select('discountPrice')
 
 
         // all ok
