@@ -158,6 +158,7 @@ const dashboardproduct_Controller = async (req,res)=>{
         res.status(500).json(err)
   }
 }
+
 // dashboard products client-------------------------------------------------------------------------
 const publicdashboard_Controller =async(req,res)=>{
 try{
@@ -198,9 +199,28 @@ try{
   }
 }
 
+//  product review-------------------------------------------------------------------------
+const productReview_Controller = async (req,res)=>{
+try{
+    // get data from client
+      const {productId,review}=req.body
+      
+    //   filter by product id
+      const existingProduct = await productModel.findById(productId)
+      
 
+    //   push review from client to db
+      existingProduct.reviews.push(review)
+    //   save new review
+      existingProduct.save()
 
-
+//   all ok
+res.status(200).json('review submitted')
+}catch(err){
+    console.log(err)
+    res.status(500).json(err)
+}
+}
 
 
 // --exports -------------------------------------------------------------------------
@@ -211,4 +231,5 @@ module.exports ={
     deleteProduct_controller,
     dashboardproduct_Controller,
     publicdashboard_Controller,
+    productReview_Controller,
 }
