@@ -147,11 +147,11 @@ const dashboardproduct_Controller = async (req,res)=>{
         if(sortBy=='hightolow') sortByPrice.discountPrice =-1
         
         // display product from db
-        const products = await productModel.find(filterBy).limit(limitperPage).skip(productSkip).sort(sortByPrice).select('discountPrice')
+        const products = await productModel.find(filterBy).limit(limitperPage).skip(productSkip).sort(sortByPrice)
 
 
         // all ok
-        res.status(200).json(products)
+        res.status(200).json({products,limit:limitperPage,skip:productSkip,totalProduct:products.length})
 
     }catch(er){
       console.log(err)
