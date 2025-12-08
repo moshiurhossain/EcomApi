@@ -14,7 +14,7 @@ const { default: mongoose } = require("mongoose");
         api_secret: 'O_g_uwsr6YxG73lDqL9aLxGEcJw' // Click 'View API Keys' above to copy your API secret
     });
 
-// --add product
+// --add product -------------------------------------------------------------------------
 const addProduct_Controller = async (req,res)=>{
     try{   
         //    get data from frontend
@@ -85,7 +85,7 @@ const addProduct_Controller = async (req,res)=>{
     }  
 }
 
-// ------------update product status
+// ------------update product status -------------------------------------------------------------------------
 const ProductStatus_Controller = async(req,res)=>{
   try{ 
 
@@ -104,7 +104,7 @@ const ProductStatus_Controller = async(req,res)=>{
   }
 }
 
-// delete product controller
+// delete product controller -------------------------------------------------------------------------
 const deleteProduct_controller= async (req,res)=>{
     try{ 
         const {productId} =req.body
@@ -121,7 +121,7 @@ const deleteProduct_controller= async (req,res)=>{
   }
 }
 
-// dashboard products
+// dashboard products staff-------------------------------------------------------------------------
 const dashboardproduct_Controller = async (req,res)=>{
     try{
         // filter by  category of get all products
@@ -158,12 +158,57 @@ const dashboardproduct_Controller = async (req,res)=>{
         res.status(500).json(err)
   }
 }
+// dashboard products client-------------------------------------------------------------------------
+const publicdashboard_Controller =async(req,res)=>{
+try{
+        // filter by  category of get all products
+         const {filterProduct}=req.body
+        // create empty object
+        const filterBy ={
+            adminApproval:'approved'
+        }
+        const sortByPrice ={}
+        
+        // get query params
+        const {limit,page, minprice,maxprice,sortBy} = req.query
 
 
-// --exports
+        const limitperPage = limit || 6
+        const productSkip = limitperPage*(page-1)
+        
+        // sort by max and min price
+        if(minprice && maxprice)  filterBy.discountPrice ={$gte:minprice,$lte:maxprice}
+
+         // sort by category 
+        if(filterProduct != 'all') filterBy.categoryId =filterProduct
+        // sort from high to low or visversa
+        if(sortBy=='lowtohigh') sortByPrice.discountPrice =1
+        if(sortBy=='hightolow') sortByPrice.discountPrice =-1
+        
+        // display product from db
+        const products = await productModel.find(filterBy).limit(limitperPage).skip(productSkip).sort(sortByPrice)
+
+
+        // all ok
+        res.status(200).json({products,limit:limitperPage,skip:productSkip,totalProduct:products.length})
+
+    }catch(er){
+      console.log(err)
+        res.status(500).json(err)
+  }
+}
+
+
+
+
+
+
+// --exports -------------------------------------------------------------------------
+
 module.exports ={
     addProduct_Controller,
     ProductStatus_Controller,
     deleteProduct_controller,
     dashboardproduct_Controller,
+    publicdashboard_Controller,
 }
