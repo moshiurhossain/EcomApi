@@ -10,16 +10,17 @@ const cartSchema = new mongoose.Schema({
         ref:'product',
         require:true,
     },
-    varient:{
-        type:String,
-        default:null,
-
-    },
-    quantity:{
+    varient:[{
+        varientName:{
+            type:String,
+            default:null,
+        },
+    }],
+    qty:{
         type:Number,
         default:1,
     },
 
-},{timestamps})
+},{timestamps:true})
 
 module.exports = mongoose.model('cart',cartSchema)
