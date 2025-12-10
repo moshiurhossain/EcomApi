@@ -10,7 +10,7 @@ const addToCart_Controller = async (req,res)=>{
       const existingproduct = cartModel.findOne({productId})
 
       if(existingproduct){
-     if(varient != existingproduct.varient) existingproduct.push(varient);
+     if(!existingproduct.varient.includes(varient[0].varientName) ) existingproduct.varient.push(varient[0]);
 
      existingproduct.save()
 
