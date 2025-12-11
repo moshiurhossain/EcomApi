@@ -6,7 +6,7 @@ const cartApi = express.Router()
 // add to cart
 cartApi.post('/addtocart',addToCart_Controller)
 // remove from cart
-cartApi.post('/removefromcart',removeFromCart_Controller)
+cartApi.delete('/removefromcart',removeFromCart_Controller)
 
 
 // exports

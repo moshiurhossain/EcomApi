@@ -51,15 +51,25 @@ const addToCart_Controller = async (req,res)=>{
 // remove from cart
 const removeFromCart_Controller = async (req,res)=>{
    try{
+        const {creatorId,delteItemId} = req.body
 
+        const existCart = await cartModel.findOne({creatorId})
+        
+        if(!existCart) return res.status(401).json(`cart not found`)
+
+         if(delteItemId == existCart._id ){
+            await cartModel.findByIdAndDelete(delteItemId).save()
+         }else{
+             await cartModel.updateOne({$pull:{cartItem:{productId:delteItemId}}})
+         }
 
 
     // all ok 
-    res.status(200).json(`Added to cart`)
+    res.status(200).json(`Removed from cart`)
 
    }catch(err){
     console.log(err)
-    res.status(500).json(err)
+    res.status(500).json(`Internal server error: ${err}`)
    }
 }
 
