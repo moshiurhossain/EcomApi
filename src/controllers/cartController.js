@@ -5,22 +5,33 @@ const cartModel = require("../models/cartModel")
 // add to cart
 const addToCart_Controller = async (req,res)=>{
    try{
+      // get data from client
+      const {creatorId,cartItem,varient,qty} = req.body
+      // find product in db
+      const existingproduct = await cartModel.findOne({creatorId})
 
-      const {creatorId,productId,varient,qty} = req.body
-      const existingproduct = cartModel.findOne({productId})
-
+      // 
       if(existingproduct){
-     if(!existingproduct.varient.includes(varient[0].varientName) ) existingproduct.varient.push(varient[0]);
+      const cartProduct =   existingproduct.cartItem.map((item)=>{ 
+      const filteritem = cartItem.filter((filterProduct)=>{filterProduct.productId == item.productId})
 
-     existingproduct.save()
-
-         existingproduct.qty = existingproduct.qty +1
-        return  res.status(200).json(`Added to cart`)
+      if(filteritem){
+       existingproduct.qty += 1  
+       res.status(200).json({message:`prdouct qty updated`})
+      }else{
+       existingproduct.push(cartItem)
+       res.status(200).json({message:`prdouct added`})
       }
+      })
+       return await existingproduct.save()
+      }
+
+     
 
       await new cartModel({
          creatorId,
-         productId,
+         cartItem,
+         varient,
       }).save()
 
 

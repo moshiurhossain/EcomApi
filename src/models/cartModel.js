@@ -5,11 +5,15 @@ const cartSchema = new mongoose.Schema({
         type:String,
         require:true,
     },
-    productId:{
-        type:mongoose.Schema.ObjectId,
-        ref:'product',
-        require:true,
-    },
+    cartItem:[
+        {
+            productId:{
+            type:mongoose.Schema.ObjectId,
+            ref:'product',
+            require:true,
+               },
+        }
+    ],
     varient:[{
         varientName:{
             type:String,
