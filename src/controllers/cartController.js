@@ -6,7 +6,7 @@ const cartModel = require("../models/cartModel")
 const addToCart_Controller = async (req,res)=>{
    try{
       // get data from client
-      const {creatorId,cartItem,varient,qty} = req.body
+      const {creatorId,cartItem,} = req.body
       // find product in db
       const existingproduct = await cartModel.findOne({creatorId})
 
@@ -16,10 +16,13 @@ const addToCart_Controller = async (req,res)=>{
       const filteritem = cartItem.filter((filterProduct)=>{filterProduct.productId == item.productId})
 
       if(filteritem){
-       existingproduct.qty += 1  
+       item.qty += 1  
        res.status(200).json({message:`prdouct qty updated`})
       }else{
-       existingproduct.push(cartItem)
+         cartItem.map((item)=>{
+           existingproduct.cartItem.push(item)
+         })
+       
        res.status(200).json({message:`prdouct added`})
       }
       })
@@ -31,7 +34,7 @@ const addToCart_Controller = async (req,res)=>{
       await new cartModel({
          creatorId,
          cartItem,
-         varient,
+         
       }).save()
 
 

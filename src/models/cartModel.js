@@ -6,24 +6,31 @@ const cartSchema = new mongoose.Schema({
         require:true,
     },
     cartItem:[
-        {
+        {  
+            // product id -----------------------
             productId:{
-            type:mongoose.Schema.ObjectId,
-            ref:'product',
-            require:true,
+                type:mongoose.Schema.ObjectId,
+                ref:'product',
+                require:true,
                },
-        }
-    ],
-    varient:[{
-        varientName:{
-            type:String,
-            default:null,
+            // product guantity -----------------------   
+            qty:{
+                type:Number,
+                default:1,
+                },
+            // product varient -----------------------
+            varient:[{
+                varientName:{
+                type:String,
+                default:null,
+                            },
+                    }],    
+           
         },
-    }],
-    qty:{
-        type:Number,
-        default:1,
-    },
+        
+    ],
+   
+   
 
 },{timestamps:true})
 
