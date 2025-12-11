@@ -17,6 +17,7 @@ const addToCart_Controller = async (req,res)=>{
 
       if(filteritem){
        item.qty += 1  
+       item.varient.push(cartItem[0].varient[0])
        res.status(200).json({message:`prdouct qty updated`})
       }else{
          cartItem.map((item)=>{
