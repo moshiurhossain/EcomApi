@@ -1,6 +1,6 @@
 // libaries
 const express = require('express')
-const { addProduct_Controller, ProductStatus_Controller, deleteProduct_controller, dashboardproduct_Controller, publicdashboard_Controller, productReview_Controller } = require('../../controllers/productController')
+const { addProduct_Controller, ProductStatus_Controller, deleteProduct_controller, dashboardproduct_Controller, publicdashboard_Controller, productReview_Controller, getSingleProduct_Controller } = require('../../controllers/productController')
 const productApi = express.Router()
 const multer  = require('multer')
 const jwtVerification = require('../../middlewares/jwtVerification')
@@ -22,5 +22,7 @@ productApi.get('/dashboardproduct',dashboardproduct_Controller)
 productApi.get('/publicdashboard', publicdashboard_Controller)
 // product review
 productApi.post('/productreview',productReview_Controller)
+// get single product
+productApi.get('/getsingleproduct/:slug',getSingleProduct_Controller)
 // exports
 module.exports = productApi

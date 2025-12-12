@@ -223,6 +223,26 @@ res.status(200).json('review submitted')
 }
 
 
+// get single product-------------------------------------------------------------------------------
+const getSingleProduct_Controller = async (req,res)=>{
+  try{
+    const {slug} = req.params
+
+    const existingProduct = await productModel.findOne({slug})
+
+        
+
+    // all ok
+    res.status(200).json({
+      data:existingProduct
+
+    })
+  }catch(err){
+    res.status(500).json({errorMessage:`Internal server error: ${err}`})
+  }
+}
+
+
 // --exports -------------------------------------------------------------------------
 
 module.exports ={
@@ -232,4 +252,5 @@ module.exports ={
     dashboardproduct_Controller,
     publicdashboard_Controller,
     productReview_Controller,
+    getSingleProduct_Controller,
 }

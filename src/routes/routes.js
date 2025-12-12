@@ -2,9 +2,10 @@
 const express = require('express')
 const authApi = require('./api/authApi')
 const categoryApi = require('./api/categoryApi')
-const productApi = require('./api/productApi')
+
 
 const cartApi = require('./api/cartApi')
+const productApi = require('./api/productApi')
 const route = express.Router()
 
 // authApi
