@@ -73,10 +73,27 @@ const removeFromCart_Controller = async (req,res)=>{
    }
 }
 
+// get cart
+const getCart_Controller = async (req,res)=>{
+   try{ 
+
+      const {userId} = req.body
+      const existingCart = await cartModel.find({creatorId: userId}).populate({path:'cartItem.productId',select:'title thumbnail discountPrice'})
+
+      if(!existingCart) return res.status(401).json(`cart does not exist`)
+
+      // all ok
+      res.status(200).json({successMessage:`get cart successfull`})
+   }catch(err){
+      res.status(500).json({errorMessage:err})
+   }
+}
+
 
 
 // exports
 module.exports = {
     addToCart_Controller,
     removeFromCart_Controller,
+    getCart_Controller,
 }
