@@ -78,12 +78,22 @@ const getCart_Controller = async (req,res)=>{
    try{ 
 
       const {userId} = req.body
-      const existingCart = await cartModel.find({creatorId: userId}).populate({path:'cartItem.productId',select:'title thumbnail discountPrice'})
+      const existingCart = await cartModel.find({creatorId: userId}).populate({
+         path:'cartItem.productId',
+         select:'title thumbnail price discountPrice',
+      })
 
-      if(!existingCart) return res.status(401).json(`cart does not exist`)
+      
+
+      const sum = existingCart.cartItem.reduce((accumulator,nextNumber)=>{
+         return accumulator + (nextNumber.productId.discountPrice *nextNumber.qty)
+      },0)
 
       // all ok
-      res.status(200).json({successMessage:`get cart successfull`})
+      res.status(200).json({
+         cartItem:existingCart,
+         total:sum,
+      })
    }catch(err){
       res.status(500).json({errorMessage:err})
    }
