@@ -11,7 +11,18 @@ const cuponSchema = new mongoose.Schema({
     discountPrice:{
         type:Number,
         required:true,
-    }
+    },
+    condition:[{
+        discountProductId:{
+            type:mongoose.Schema.ObjectId,
+            ref:'product',
+        },
+        appliedPrice:{
+            type:Number,
+            default:1000,
+        }
+    }],
+    
 },{timestamps:true})
 
 module.exports = mongoose.model('cupon',cuponSchema)
