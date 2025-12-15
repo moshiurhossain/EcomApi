@@ -41,8 +41,21 @@ const cuponUpdate_controller = async (req,res)=>{
   }
 }
 
+// update-cupon -------------------------------------
+const getCupon_Controller = async (req,res)=>{
+  try{
+    
+    // all ok
+    res.status(200).json({successMessage:`Get Cupon`})
+  }catch(err){
+    console.log(err)
+    res.status(500).json({errorMessage:`Internal server error :${err}`})
+  }
+}
+
 
 module.exports = {
     cuponController,
     cuponUpdate_controller,
+    getCupon_Controller,
 } 
