@@ -55,9 +55,27 @@ const getCupon_Controller = async (req,res)=>{
   }
 }
 
+// delete-cupon -------------------------------------
+
+const deleteCupon_Controller = async (req,res)=>{
+  try{
+
+    const {cuponId} =req.body
+
+    const existingCupon = await cuponModel.findByIdAndDelete(cuponId)
+   
+
+    // all ok
+    res.status(200).json({successMessage:`cupon deleted`})
+  }catch(err){
+    console.log(err)
+    res.status(500).json({errorMessage:`Internal server error :${err}`})
+  }
+}
 
 module.exports = {
     cuponController,
     cuponUpdate_controller,
     getCupon_Controller,
+    deleteCupon_Controller
 } 
