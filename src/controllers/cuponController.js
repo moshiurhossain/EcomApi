@@ -44,9 +44,11 @@ const cuponUpdate_controller = async (req,res)=>{
 // update-cupon -------------------------------------
 const getCupon_Controller = async (req,res)=>{
   try{
-    
+      
+   const allcupons = await cuponModel.find()
+
     // all ok
-    res.status(200).json({successMessage:`Get Cupon`})
+    res.status(200).json({data:allcupons})
   }catch(err){
     console.log(err)
     res.status(500).json({errorMessage:`Internal server error :${err}`})
