@@ -1,4 +1,5 @@
 const { emailRegex } = require("../helpers/Regex")
+const cartModel = require("../models/cartModel")
 const cuponModel = require("../models/cuponModel")
 
 // ---------------place order
@@ -17,7 +18,13 @@ const checkout_Controller = async (req,res)=>{
             cuponData = await cuponModel.findOne({cuponName:cupon})
         }
 
-        if(!cupon) return res.status(401).json(`no cupon is added`)
+            //delivery charge by disrict
+            let deliveryCharge = 80
+            
+            if(district != 'Dhaka') deliveryCharge = 120
+
+            const existingCartPrice = await cartModel.findOne({_id:cartId})
+
 
             res.status(200).json(cuponData)
 
