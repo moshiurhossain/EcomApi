@@ -23,7 +23,14 @@ const checkout_Controller = async (req,res)=>{
             
             if(district != 'Dhaka') deliveryCharge = 120
 
-            const existingCartPrice = await cartModel.findOne({_id:cartId})
+            const existingCartPrice = await cartModel.findOne({_id:cartId}).populate({
+                path : cartItem.productId,
+                select : 'discountPrice title thumbnail price varient'
+            })
+
+            const totalProductPrice = existingCartPrice.cartItem.reduce((accumulater , nextvalue)=>{
+               return accumulater +(nextvalue.productId.discountPrice*qty)
+            },0)
 
 
             res.status(200).json(cuponData)
