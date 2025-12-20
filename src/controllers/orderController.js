@@ -1,6 +1,8 @@
+const { generateOTP } = require("../helpers/allGenerators")
 const { emailRegex } = require("../helpers/Regex")
 const cartModel = require("../models/cartModel")
 const cuponModel = require("../models/cuponModel")
+const orderModel = require("../models/orderModel")
 
 // ---------------place order
 const checkout_Controller = async (req,res)=>{
@@ -33,6 +35,17 @@ const checkout_Controller = async (req,res)=>{
             },0)
 
             const total = (totalProductPrice + deliveryCharge) - cuponData.discountPrice
+
+            await new orderModel({
+                name,
+                phone,
+                email,
+                address,
+                district,
+                totalPrice:total,
+                productInfo:existingCartPrice,
+                orderId:generateOTP()
+            }).save()
 
             res.status(200).json(cuponData)
 

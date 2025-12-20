@@ -31,6 +31,10 @@ const orderSchema = new mongoose.Schema({
         type:Number,
         required:true,
     },
+    orderId:{
+        type:Number,
+        required:true,
+    },
 })
 
 // export schema
