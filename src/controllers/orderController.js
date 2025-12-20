@@ -29,9 +29,10 @@ const checkout_Controller = async (req,res)=>{
             })
 
             const totalProductPrice = existingCartPrice.cartItem.reduce((accumulater , nextvalue)=>{
-               return accumulater +(nextvalue.productId.discountPrice*qty)
+               return accumulater +(nextvalue.productId.discountPrice* nextvalue.qty)
             },0)
 
+            const total = (totalProductPrice + deliveryCharge) - cuponData.discountPrice
 
             res.status(200).json(cuponData)
 
