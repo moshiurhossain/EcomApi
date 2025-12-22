@@ -14,7 +14,7 @@ authApi.get('/resendotp',resendOtp_Controller)
 authApi.post('/login',login_Controller)
 authApi.post('/updateprofile',upload.single('avatar') ,updateProfile_Controller)
 authApi.post('/makeadmin',jwtVerification, checkRole(['admin']), makeAdmin_Controller)
-authApi.get('/searchuser',searchUser_Controller)
+authApi.get('/searchuser/:searchData',searchUser_Controller)
 
 
 // exports

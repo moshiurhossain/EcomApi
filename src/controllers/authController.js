@@ -243,6 +243,12 @@ const updateProfile_Controller = async (req,res)=>{
 // search user controller
 const searchUser_Controller = async (req,res)=>{
 try{
+  const {searchData}= req.params
+
+  const existingUser = await authModel.find({$or:[
+    {email:{$regex:searchData,$options:'i'}},
+    {userName:{$regex:searchData,$options:'i'}}
+  ]})
     //  all ok
      res.status(200).json(`user search`)
 }catch(err){
