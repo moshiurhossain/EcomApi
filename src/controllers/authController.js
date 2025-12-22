@@ -240,7 +240,16 @@ const updateProfile_Controller = async (req,res)=>{
     }
 }
 
-
+// search user controller
+const searchUser_Controller = async (req,res)=>{
+try{
+    //  all ok
+     res.status(200).json(`user search`)
+}catch(err){
+  console.log(err)
+  res.status(500).json(`${err}`)
+}
+}
 
 
 // all exports
@@ -250,4 +259,5 @@ module.exports = {
     verifyOtp_Controller,
     resendOtp_Controller,
     updateProfile_Controller,
+    searchUser_Controller,
 }
